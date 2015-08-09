@@ -3,9 +3,9 @@
 One fundamental task in molecular biology is to understand the dependency among genes or proteins to model
 biological networks. Numerous methods have been developed for reconstructing different types of networks using data sets generated from high-throughput technologies. 
 
-we provide PCM, an opensource implementation of pairwise correlation mining algorithms supporting many widely used marginal correlation measures, and additionally provide several algorithms for calculating low-order conditional correlations.
+We provide PCM, an opensource implementation of pairwise correlation mining algorithms supporting many widely used marginal correlation measures, and additionally provide several algorithms for calculating low-order conditional correlations.
 
-PCM was implemented in C++, which uses a table as input. Columns and rows in the input table correspond to variables (e.g. genes, proteins) and samples (e.g. gene expression profiles), respectively.
+PCM was implemented in C++, which uses a table as input. Columns and rows in the input table correspond to variables (e.g. genes, proteins) and samples (e.g. gene expression profiles), respectively. The source code are stored in PCM_CODE folder and the fold named eigen in it is the library eigen.
 
 In the current version, PCM contains 11 correlation measures for continuous variables and 27 correlation
 measures for binary variables. We also provide many interfaces for users. 
