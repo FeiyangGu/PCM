@@ -19,5 +19,5 @@ If you want to use the algorithm LOPC in Zuo et al. (2014) obtain only pairs who
             
           PCM.exe LOPCC data.txt output.txt
 
-The more usages can be found in  0.1.0_doucument.pdf.  
+The more usages can be found in  PCM_Document_0.1.0.pdf.  
 
