@@ -43,7 +43,6 @@ void CMI2NI_BIN(char* inputfile, char *outputfile, double threshold, int order0)
 	bool isReduced = true;
 	while (isReduced)
 	{
-		cout << order << "  " << order0 << endl;
 		order = order + 1;
 		if (order > MAX_ORDER) break;
 		if (order0 != INF && order > order0)
