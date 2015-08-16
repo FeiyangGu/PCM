@@ -27,5 +27,5 @@ If you want to use the algorithm LOPC in Zuo et al. (2014) obtain only pairs who
             
           PCM LOPCC data_DREAM3.txt output.txt
 
-The more usages can be found in  PCM_Document_0.1.0.pdf.  
+The more usages can be found in  PCM_Document_1.0.0.pdf.  
 
