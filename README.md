@@ -17,7 +17,9 @@ If you want to find all protein pairs whose Pearson’s correlation coefficients
           PCM PearsonC data_DREAM3.txt output.txt 0.2 
           
 To rapidly obtain a set of correlated pairs, we can use the following command:
+          
           PCM PearsonC data_DREAM3.txt output.txt 0.2  1  5
+          
 In this command  1 and 5 means that PCM first uses k-means to partition the variables into 5 clusters, and then calculate the pairs which are only in the same cluster. 
 
 
