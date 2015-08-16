@@ -4,9 +4,9 @@
 input: rows represent samples and  colums represent attributes
 output: rows represent attributes and colums represent samples
 */
-vector < vector<int> >  ReadBinData(char * inputfile)
+vector <RecordB>  ReadBinData(char * inputfile)
 {
-	vector< vector<int> > Element;
+	vector< RecordB > Element;
 	ifstream fin(inputfile);
 	string str;
 	int n = 0; //sample
@@ -22,11 +22,11 @@ vector < vector<int> >  ReadBinData(char * inputfile)
 		{
 			if (value!=0 && value!=1)
 			{
-				printf("The input data shoud be a 0 1 matrix!!!");
+				printf("The input data shoud be a binary matrix!!!");
 				exit(1);
 			}
-			if (Element.size() <= m) Element.push_back(temp);
-			Element[m].push_back(value);
+			if (Element.size() <= m) Element.push_back(RecordB(temp,m+1) );
+			Element[m].attribute.push_back(value);
 			m++;
 		}
 		if (n != 0 && m != pre)
@@ -47,9 +47,9 @@ vector < vector<int> >  ReadBinData(char * inputfile)
 	return Element;
 }
 
-vector < vector<double> > ReadConData(char * inputfile)
+vector <RecordC>  ReadConData(char * inputfile)
 {
-	vector< vector<double> > Element;
+	vector< RecordC > Element;
 	ifstream fin(inputfile);
 	string str;
 	int n = 0; //sample
@@ -63,8 +63,46 @@ vector < vector<double> > ReadConData(char * inputfile)
 		m = 0;
 		while (ss >> value)
 		{
-			if (Element.size() <= m) Element.push_back(temp);
-			Element[m].push_back(value);
+			if (Element.size() <= m) Element.push_back(RecordC(temp, m+1) );
+			Element[m].attribute.push_back(value);
+			m++;
+		}
+		if (n != 0 && m != pre)
+		{
+			printf("The number of the elements in line %d are not the same as before\n", n + 1);
+			exit(1);
+		}
+		n++;
+		pre = m;
+	}
+	fin.close();
+	cout << n << " row(s)  " << m << " column(s)" << endl;
+	if (n <= 2)
+	{
+		printf("The number of sample is too little\n");
+		exit(1);
+	}
+	return Element;
+}
+
+vector <RecordB>  ReadDisData(char * inputfile)
+{
+	vector< RecordB > Element;
+	ifstream fin(inputfile);
+	string str;
+	int n = 0; //sample
+	int m = 0; //variable
+	vector<int>temp;
+	int pre = -1;
+	while (getline(fin, str))
+	{
+		stringstream ss(str);
+		int value;
+		m = 0;
+		while (ss >> value)
+		{
+			if (Element.size() <= m) Element.push_back(RecordB(temp, m + 1));
+			Element[m].attribute.push_back(value);
 			m++;
 		}
 		if (n != 0 && m != pre)

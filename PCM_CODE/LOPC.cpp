@@ -24,15 +24,15 @@ double p12_34(double p12_3, double p14_3, double p24_3);
 
 void LOPC(char* inputfile, char *outputfile)
 {
-	vector< vector<double> > Element = ReadConData(inputfile);
+	vector< RecordC > Element = ReadConData(inputfile);
 	int m = Element.size();
-	int n = Element[0].size();
+	int n = Element[0].attribute.size();
 	MatrixXd data(m, n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			data(i, j) = Element[i][j];
+			data(i, j) = Element[i].attribute[j];
 		}
 	}
 

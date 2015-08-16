@@ -15,15 +15,15 @@ double cas_BIN(const MatrixXi & x, const MatrixXi &y, const MatrixXi & z);
 
 void CMI2NI_BIN(char* inputfile, char *outputfile, double threshold, int order0)
 {
-	vector< vector<int> > Element = ReadBinData(inputfile);
+	vector< RecordB > Element = ReadBinData(inputfile);
 	int m = Element.size();
-	int n = Element[0].size();
+	int n = Element[0].attribute.size();
 	MatrixXi data(m, n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			data(i, j) = Element[i][j];
+			data(i, j) = Element[i].attribute[j];
 		}
 	}
 
@@ -44,6 +44,7 @@ void CMI2NI_BIN(char* inputfile, char *outputfile, double threshold, int order0)
 	while (isReduced)
 	{
 		order = order + 1;
+		cout << order << " order" << endl;
 		if (order > MAX_ORDER) break;
 		if (order0 != INF && order > order0)
 		{

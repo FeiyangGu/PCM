@@ -4,8 +4,11 @@
 
 ///  Binary Variable
 void CMI2NI_BIN(char* inputfile, char *outputfile, double threshold, int order0 = 1);
-void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (vector<int>& var1, vector<int>& var2));
-void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (vector<int>& var1, vector<int>& var2, double cc), double cc);
+void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (vector<int>& var1, vector<int>& var2), int kind=0, double r = 2);
+void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (vector<int>& var1, vector<int>& var2, double cc), double cc, int kind=0, double r = 2);
+
+
+double BK_MI(vector<int>& var1, vector<int>& var2);
 double BK_Support(vector<int>& var1, vector<int>& var2);
 double BK_Jaccard(vector<int>& var1, vector<int>& var2);
 double BK_Interest(vector<int>& var1, vector<int>& var2);
@@ -32,3 +35,4 @@ double BK_SCWCC(vector<int>& var1, vector<int>& var2, double cc);
 double BK_TwoWaySupport(vector<int>& var1, vector<int>& var2);
 double BK_SCWS(vector<int>& var1, vector<int>& var2);
 double BK_SimplifiedXstatistic(vector<int>& var1, vector<int>& var2);
+int BK_Distance(vector<int>& var1, vector<int>& var2);

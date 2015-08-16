@@ -265,3 +265,75 @@ double BK_SimplifiedXstatistic(vector<int>& var1, vector<int>& var2)
 	else return n*(tp - ep)*(tp - ep) / ep;
 }
 
+int BK_Distance(vector<int>& var1, vector<int>& var2)
+{
+	int ret = 0;
+	int n = var1.size();
+	for (int i = 0; i < n; i++)
+	{
+		if (var1[i] != var2[i])
+			ret++;
+	}
+	return ret;
+}
+
+double BK_MI(vector<int>& var1, vector<int>& var2)
+{
+	map<int, int> var1_kind, var2_kind;
+
+	int n = var1.size();
+	for (int i = 0; i < n; i++)
+	{
+		if (var1_kind.count(var1[i]) == 0)
+			var1_kind[var1[i]] = var1_kind.size();
+		if (var2_kind.count(var2[i]) == 0)
+			var2_kind[var2[i]] = var2_kind.size();
+	}
+
+	vector<int> var1_kind_num(var1_kind.size(), 0), var2_kind_num(var2_kind.size(), 0);
+	for (int i = 0; i < var1.size(); i++)
+	{
+		int tp = var1_kind[var1[i]];
+		var1_kind_num[tp] ++;
+		tp = var2_kind[var2[i]];
+		var2_kind_num[tp] ++;
+	}
+
+	double H1 = 0, H2 = 0;
+	for (int i = 0; i < var1_kind.size(); i++)
+	{
+		double value = 1.0*var1_kind_num[i] / n;
+		H1 -= value*log(value);
+	}
+
+	for (int i = 0; i < var2_kind.size(); i++)
+	{
+		double value = 1.0*var2_kind_num[i] / n;
+		H2 -= value*log(value);
+	}
+
+	vector<int> temp(var2_kind.size(), 0);
+	vector< vector<int> > join_count(var1_kind.size(), temp);
+	for (int i = 0; i<n; i++)
+	{
+		int iv = var1_kind[var1[i]];
+		int jv = var2_kind[var2[i]];
+		join_count[iv][jv]++;
+	}
+
+	double result = 0;
+	for (int k = 0; k<var1_kind.size(); k++)
+	{
+		for (int w = 0; w<var2_kind.size(); w++)
+		{
+			if (join_count[k][w] == 0) continue;
+			double value = 1.0*join_count[k][w] / n;
+			result += value*log(1.0*n*join_count[k][w] / var1_kind_num[k] / var2_kind_num[w]);
+		}
+	}
+	if (H1 != 0 && H2 != 0)
+	{
+		return result /= min(H1, H2);
+	}
+	else return 0;
+}

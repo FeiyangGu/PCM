@@ -158,21 +158,12 @@ double CK_Kendall(vector<double>& var1, vector<double>& var2)
 double CK_Distance(vector<double>& var1, vector<double>& var2)
 {
 	int n = var1.size();
-	double covxy = 0, covxx = 0, covyy = 0;
+	double ret = 0;
 	for (int i = 0; i < n; i++)
 	{
-		for (int j = 0; j < n; j++)
-		{
-			covxy += fabs(var1[i] - var1[j]) * fabs(var2[i] - var2[j]);
-			covxx += fabs(var1[i] - var1[j]) * fabs(var1[i] - var1[j]);
-			covyy += fabs(var2[i] - var2[j]) * fabs(var2[i] - var2[j]);
-		}
+		ret += (var1[i] - var2[i]) * (var1[i] - var2[i]);
 	}
-	if (covxx*covyy < 1e-7) return 0;
-	else
-	{
-		return sqrt(covxx) / sqrt(sqrt(covxx*covyy));
-	}
+	return sqrt(ret);
 }
 
 double CK_HoeffdingD(vector<double>& var1, vector<double>& var2)
