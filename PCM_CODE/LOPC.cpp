@@ -120,7 +120,7 @@ void LOPC(char* inputfile, char *outputfile)
 		{
 			if (p_abcd(i, j) < 0.05)
 			{
-				fout << i + 1 << " " << j + 1 << " " << p_abcd(i, j) << endl;
+				fout << i + 1 << " " << j + 1  << endl;
 			}
 		}
 	}
