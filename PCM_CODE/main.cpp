@@ -174,7 +174,7 @@ int main(int argc, char **argv) /// exe  funcion input output (thresod)   (cc/or
 			}
 		}
 	}
-	return 0;
+	return  0;
 }
 
 

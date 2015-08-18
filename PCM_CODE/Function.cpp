@@ -85,43 +85,6 @@ vector <RecordC>  ReadConData(char * inputfile)
 	return Element;
 }
 
-vector <RecordB>  ReadDisData(char * inputfile)
-{
-	vector< RecordB > Element;
-	ifstream fin(inputfile);
-	string str;
-	int n = 0; //sample
-	int m = 0; //variable
-	vector<int>temp;
-	int pre = -1;
-	while (getline(fin, str))
-	{
-		stringstream ss(str);
-		int value;
-		m = 0;
-		while (ss >> value)
-		{
-			if (Element.size() <= m) Element.push_back(RecordB(temp, m + 1));
-			Element[m].attribute.push_back(value);
-			m++;
-		}
-		if (n != 0 && m != pre)
-		{
-			printf("The number of the elements in line %d are not the same as before\n", n + 1);
-			exit(1);
-		}
-		n++;
-		pre = m;
-	}
-	fin.close();
-	cout << n << " row(s)  " << m << " column(s)" << endl;
-	if (n <= 2)
-	{
-		printf("The number of sample is too little\n");
-		exit(1);
-	}
-	return Element;
-}
 
 MatrixXd Covar(const MatrixXd &mat)
 {

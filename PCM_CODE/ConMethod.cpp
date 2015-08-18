@@ -2,55 +2,8 @@
 const double INF = 1e32;
 
 vector<int> ClustC(vector<RecordC>& Element, int k);
-
-vector<RetRec> Con_Get_Pair(vector<RecordC>& Element, double threshold, double(*method) (vector<double>& var1, vector<double>& var2))
-{
-	int m = Element.size(); // the number of variables
-	vector<RetRec> ret;
-	for (int i = 0; i < m; i++)
-	{
-		for (int j = i + 1; j < m; j++)
-		{
-			double result = method(Element[i].attribute, Element[j].attribute);
-			if (result >= threshold)
-			{
-				ret.push_back(RetRec(Element[i].id, Element[j].id, result));
-			}
-		}
-	}
-	return ret;
-}
-
-vector<RetRec> Con_Get_Pair(vector<RecordC>& Element, double threshold, double(*method) (vector<double>& var1, vector<double>& var2), bool isrank)
-{
-	int m = Element.size(); // the number of variables
-	if (isrank)
-	{
-		for (int i = 0; i < m; i++)
-		{
-			vector<double> temp = Element[i].attribute;
-			sort(temp.begin(), temp.end());
-			map<double, int>mp;
-			for (int j = 0; j < temp.size(); j++)
-				mp[temp[j]] = j;
-			for (int j = 0; j < temp.size(); j++)
-				Element[i].attribute[j] = mp[Element[i].attribute[j]];
-		}
-	}
-	vector<RetRec> ret;
-	for (int i = 0; i < m; i++)
-	{
-		for (int j = i + 1; j < m; j++)
-		{
-			double result = method(Element[i].attribute, Element[j].attribute);
-			if (result >= threshold)
-			{
-				ret.push_back(RetRec(Element[i].id, Element[j].id, result));
-			}
-		}
-	}
-	return ret;
-}
+vector<RetRec> Con_Get_Pair(vector<RecordC>& Element, double threshold, double(*method) (vector<double>& var1, vector<double>& var2));
+vector<RetRec> Con_Get_Pair(vector<RecordC>& Element, double threshold, double(*method) (vector<double>& var1, vector<double>& var2), bool isrank);
 
 void Con(char* inputfile, char* outputfile, double threshold, double(*method) (vector<double>& var1, vector<double>& var2), int kind, int k)
 {
@@ -59,12 +12,12 @@ void Con(char* inputfile, char* outputfile, double threshold, double(*method) (v
 	int m = Element.size();
 	int n = Element[0].attribute.size();
 	vector < vector<RecordC> > data;
-	if (kind == 0)
+	if (kind == 0)           
 	{
 		k = 1;
 		data.push_back(Element);
 	}
-	else if (kind == 1)
+	else if (kind == 1)                                                 /// utilize  k-means to cluster the data
 	{
 		vector<int> belong_clust = ClustC(Element, k);
 		data.resize(k);
@@ -77,7 +30,7 @@ void Con(char* inputfile, char* outputfile, double threshold, double(*method) (v
 	ofstream fout(outputfile);
 	for (int i = 0; i < k; i++)
 	{
-		vector<RetRec> ret = Con_Get_Pair(data[i], threshold, method);
+		vector<RetRec> ret = Con_Get_Pair(data[i], threshold, method);   ///  calculate the correlations between the pairs which are in the same cluster. 
 		for (int j = 0; j < ret.size(); j++)
 		{
 			fout << ret[j].pu << " " << ret[j].pv << " " << ret[j].value << endl;
@@ -99,7 +52,7 @@ void Con(char* inputfile, char* outputfile, double threshold, double(*method) (v
 		k = 1;
 		data.push_back(Element);
 	}
-	else if (kind == 1)
+	else if (kind == 1)												            /// utilize  k-means to cluster the data
 	{
 		vector<int> belong_clust = ClustC(Element, k);
 		data.resize(k);
@@ -112,7 +65,7 @@ void Con(char* inputfile, char* outputfile, double threshold, double(*method) (v
 	ofstream fout(outputfile);
 	for (int i = 0; i < k; i++)
 	{
-		vector<RetRec> ret = Con_Get_Pair(Element, threshold, method, isrank);
+		vector<RetRec> ret = Con_Get_Pair(Element, threshold, method, isrank);   ///  calculate the correlations between the pairs which are in the same cluster. 
 		for (int j = 0; j < ret.size(); j++)
 		{
 			fout << ret[j].pu << " " << ret[j].pv << " " << ret[j].value << endl;
@@ -123,7 +76,7 @@ void Con(char* inputfile, char* outputfile, double threshold, double(*method) (v
 }
 
 
-vector<int> ClustC(vector<RecordC>& Element, int k)
+vector<int> ClustC(vector<RecordC>& Element, int k)    /// k-means
 {
 	int m = Element.size();
 	int n = Element[0].attribute.size();
@@ -198,4 +151,53 @@ vector<int> ClustC(vector<RecordC>& Element, int k)
 	}
 	/// Clusting ends
 	return belong_clust;
+}
+
+vector<RetRec> Con_Get_Pair(vector<RecordC>& Element, double threshold, double(*method) (vector<double>& var1, vector<double>& var2))
+{
+	int m = Element.size(); // the number of variables
+	vector<RetRec> ret;
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = i + 1; j < m; j++)
+		{
+			double result = method(Element[i].attribute, Element[j].attribute);
+			if (result >= threshold)
+			{
+				ret.push_back(RetRec(Element[i].id, Element[j].id, result));
+			}
+		}
+	}
+	return ret;
+}
+
+vector<RetRec> Con_Get_Pair(vector<RecordC>& Element, double threshold, double(*method) (vector<double>& var1, vector<double>& var2), bool isrank)
+{
+	int m = Element.size(); // the number of variables
+	if (isrank)
+	{
+		for (int i = 0; i < m; i++)
+		{
+			vector<double> temp = Element[i].attribute;
+			sort(temp.begin(), temp.end());
+			map<double, int>mp;
+			for (int j = 0; j < temp.size(); j++)
+				mp[temp[j]] = j;
+			for (int j = 0; j < temp.size(); j++)
+				Element[i].attribute[j] = mp[Element[i].attribute[j]];
+		}
+	}
+	vector<RetRec> ret;
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = i + 1; j < m; j++)
+		{
+			double result = method(Element[i].attribute, Element[j].attribute);
+			if (result >= threshold)
+			{
+				ret.push_back(RetRec(Element[i].id, Element[j].id, result));
+			}
+		}
+	}
+	return ret;
 }

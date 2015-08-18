@@ -7,42 +7,9 @@ using namespace std;
 const int INF = 1 << 29;
 
 vector<int> ClustB(vector<RecordB>& Element, double r);
+vector<RetRec> Bin_Get_Pair(vector<RecordB>& Element, double threshold, double(*method) (vector<int>& var1, vector<int>& var2));
+vector<RetRec> Bin_Get_Pair(vector<RecordB>& Element, double threshold, double(*method) (vector<int>& var1, vector<int>& var2, double), double cc);
 
-vector<RetRec> Bin_Get_Pair(vector<RecordB>& Element, double threshold, double(*method) (vector<int>& var1, vector<int>& var2))
-{
-	int m = Element.size(); // the number of variables
-	vector<RetRec> ret;
-	for (int i = 0; i < m; i++)
-	{
-		for (int j = i + 1; j < m; j++)
-		{
-			double result = method(Element[i].attribute, Element[j].attribute);
-			if (result >= threshold)
-			{
-				ret.push_back(RetRec(Element[i].id, Element[j].id, result));
-			}
-		}
-	}
-	return ret;
-}
-
-vector<RetRec> Bin_Get_Pair(vector<RecordB>& Element, double threshold, double(*method) (vector<int>& var1, vector<int>& var2, double), double cc)
-{
-	int m = Element.size(); // the number of variables
-	vector<RetRec> ret;
-	for (int i = 0; i < m; i++)
-	{
-		for (int j = i + 1; j < m; j++)
-		{
-			double result = method(Element[i].attribute, Element[j].attribute, cc);
-			if (result >= threshold)
-			{
-				ret.push_back(RetRec(Element[i].id, Element[j].id, result));
-			}
-		}
-	}
-	return ret;
-}
 
 void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (vector<int>& var1, vector<int>& var2), int kind, double r)
 {
@@ -59,7 +26,7 @@ void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (v
 	}
 	else if (kind == 1)
 	{
-		vector<int> belong_clust = ClustB(Element, r);
+		vector<int> belong_clust = ClustB(Element, r);											/// utilize CLOPE to cluster the data
 		set<int>Set;
 		for (int i = 0; i < belong_clust.size(); i++)
 		{
@@ -77,7 +44,7 @@ void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (v
 	ofstream fout(outputfile);
 	for (int i = 0; i < k; i++)
 	{
-		vector<RetRec> ret = Bin_Get_Pair(data[i], threshold, method);
+		vector<RetRec> ret = Bin_Get_Pair(data[i], threshold, method);                        ///  calculate the correlations between the pairs which are in the same cluster. 
 		for (int j = 0; j < ret.size(); j++)
 		{
 			fout << ret[j].pu << " " << ret[j].pv << " " << ret[j].value << endl;
@@ -102,7 +69,7 @@ void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (v
 	}
 	else if (kind == 1)
 	{
-		vector<int> belong_clust = ClustB(Element, r);
+		vector<int> belong_clust = ClustB(Element, r);	                                  /// utilize CLOPE to cluster the data
 		set<int>Set;
 		for (int i = 0; i < belong_clust.size(); i++)
 		{
@@ -120,7 +87,7 @@ void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (v
 	ofstream fout(outputfile);
 	for (int i = 0; i < k; i++)
 	{
-		vector<RetRec> ret = Bin_Get_Pair(data[i], threshold, method, cc);
+		vector<RetRec> ret = Bin_Get_Pair(data[i], threshold, method, cc);              ///  calculate the correlations between the pairs which are in the same cluster. 
 		for (int j = 0; j < ret.size(); j++)
 		{
 			fout << ret[j].pu << " " << ret[j].pv << " " << ret[j].value << endl;
@@ -130,7 +97,7 @@ void Bin(char* inputfile, char* outputfile, double threshold, double(*method) (v
 	return;
 }
 
-vector<int> ClustB(vector<RecordB>& Element, double r)
+vector<int> ClustB(vector<RecordB>& Element, double r)                                 /// CLOPE
 {
 	int m = Element.size();
 	int n = Element[0].attribute.size();
@@ -246,4 +213,40 @@ vector<int> ClustB(vector<RecordB>& Element, double r)
 
 	/// Clusting ends
 	return belong_clust;
+}
+
+vector<RetRec> Bin_Get_Pair(vector<RecordB>& Element, double threshold, double(*method) (vector<int>& var1, vector<int>& var2))
+{
+	int m = Element.size(); // the number of variables
+	vector<RetRec> ret;
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = i + 1; j < m; j++)
+		{
+			double result = method(Element[i].attribute, Element[j].attribute);
+			if (result >= threshold)
+			{
+				ret.push_back(RetRec(Element[i].id, Element[j].id, result));
+			}
+		}
+	}
+	return ret;
+}
+
+vector<RetRec> Bin_Get_Pair(vector<RecordB>& Element, double threshold, double(*method) (vector<int>& var1, vector<int>& var2, double), double cc)
+{
+	int m = Element.size(); // the number of variables
+	vector<RetRec> ret;
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = i + 1; j < m; j++)
+		{
+			double result = method(Element[i].attribute, Element[j].attribute, cc);
+			if (result >= threshold)
+			{
+				ret.push_back(RetRec(Element[i].id, Element[j].id, result));
+			}
+		}
+	}
+	return ret;
 }
