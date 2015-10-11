@@ -62,7 +62,7 @@ void LOPC(char* inputfile, char *outputfile)
 			MatrixXd temp_inv(2, 2); temp_inv = temp.inverse();
 			PAB(i, j) = -1.0*temp_inv(0, 1) / sqrt(temp_inv(0, 0)*temp_inv(1, 1));
 			PAB(j, i) = PAB(i, j);
-			pab(i, j) = pab(j, i) =FisherNormal(PAB(i,j), m, 0);
+			pab(i, j) = pab(j, i) =FisherNormal(PAB(i,j), n, 0);
 		}
 	}
 	Padjust(pab, p_ab);
@@ -78,7 +78,7 @@ void LOPC(char* inputfile, char *outputfile)
 				tempij = max(temp, tempij);
 			}
 			PABC(i, j) = PABC(j, i) = tempij;
-			pabc(i, j) = pabc(j, i) = FisherNormal(tempij, m, 1);
+			pabc(i, j) = pabc(j, i) = FisherNormal(tempij, n, 1);
 		}
 	}
 	Padjust(pabc, p_abc);
@@ -103,7 +103,7 @@ void LOPC(char* inputfile, char *outputfile)
 					}
 				}
 				PABCD(i, j) = PABCD(j, i) = tempij;
-				pabcd(i, j) = pabcd(j, i) = FisherNormal(tempij, m, 2);
+				pabcd(i, j) = pabcd(j, i) = FisherNormal(tempij, n, 2);
 			}
 			else
 			{
@@ -120,7 +120,7 @@ void LOPC(char* inputfile, char *outputfile)
 		{
 			if (p_abcd(i, j) < 0.05)
 			{
-				fout << i + 1 << " " << j + 1  << endl;
+				fout << i + 1 << " " << j + 1 << " " << p_abcd(i, j) << endl;
 			}
 		}
 	}
